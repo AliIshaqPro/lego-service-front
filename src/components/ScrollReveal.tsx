@@ -6,13 +6,15 @@ interface ScrollRevealProps {
   delay?: number; // 1, 2, 3, or 4 for different delays
   className?: string;
   effect?: "fade-up" | "fade-down" | "fade-left" | "fade-right" | "zoom-in" | "flip-up";
+  duration?: number; // Animation duration in ms
 }
 
 export default function ScrollReveal({ 
   children, 
   delay = 0, 
   className = "",
-  effect = "fade-up"
+  effect = "fade-up",
+  duration = 800
 }: ScrollRevealProps) {
   const elementRef = useRef<HTMLDivElement>(null);
 
@@ -61,9 +63,19 @@ export default function ScrollReveal({
 
   const delayClass = delay > 0 ? `reveal-delay-${delay}` : "";
   const effectClass = getEffectClass();
+  
+  // Add custom duration style
+  const customDuration = duration !== 800 ? { "--reveal-duration": `${duration}ms` } as React.CSSProperties : {};
 
   return (
-    <div ref={elementRef} className={`reveal ${effectClass} ${delayClass} ${className}`}>
+    <div 
+      ref={elementRef} 
+      className={`reveal ${effectClass} ${delayClass} ${className}`}
+      style={customDuration}
+      data-aos={effect.replace("-", ":" )}
+      data-aos-delay={delay * 100}
+      data-aos-duration={duration}
+    >
       {children}
     </div>
   );

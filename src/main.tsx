@@ -5,14 +5,15 @@ import './index.css';
 import "aos/dist/aos.css"; // Import AOS styles
 import AOS from "aos";
 
-// Initialize AOS with custom settings
+// Initialize AOS with custom settings for slower animations
 AOS.init({
-  duration: 1500,
-  once: false,
-  mirror: true,
+  duration: 1800, // Increased duration for slower animations
+  once: false,    // Whether animation should happen only once
+  mirror: true,   // Whether elements should animate out while scrolling past them
   easing: 'ease-out-cubic',
-  delay: 100,
-  anchorPlacement: 'top-bottom'
+  delay: 150,     // Increased delay
+  anchorPlacement: 'top-bottom',
+  disable: 'mobile' // Disable on mobile devices for better performance
 });
 
 createRoot(document.getElementById("root")!).render(<App />);
