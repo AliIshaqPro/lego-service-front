@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import StatsSection from "@/components/StatsSection";
 import TechStackSection from "@/components/TechStackSection";
 import FaqSection from "@/components/FaqSection";
+import ServiceCTA from "@/components/ServiceCTA";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -127,6 +127,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Service CTA Section */}
+      <ServiceCTA className="bg-gradient-to-br from-background to-secondary/30" />
 
       {/* Service Builder Showcase */}
       <FeatureShowcase
