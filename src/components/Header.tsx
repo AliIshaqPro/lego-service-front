@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home, Code, Layers, Info, Mail, LogIn } from "lucide-react";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,62 +28,64 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "py-3 bg-background/80 backdrop-blur-lg shadow-sm"
-          : "py-5 bg-transparent"
+          ? "py-3 bg-background/95 backdrop-blur-lg shadow-md border-b border-border/30"
+          : "py-5 bg-background/50 backdrop-blur-sm"
       }`}
     >
       <div className="container flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-md bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xl">
+          <div className="w-10 h-10 rounded-md bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xl shadow-lg">
             D
           </div>
-          <span className="text-xl font-bold">DigitalBuild</span>
+          <span className="text-xl font-bold text-foreground">DigitalBuild</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-8">
           <Link
             to="/"
-            className="text-sm font-medium hover:text-primary transition-colors"
+            className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
           >
-            Home
+            <Home className="w-4 h-4" /> Home
           </Link>
           <Link
             to="/services"
-            className="text-sm font-medium hover:text-primary transition-colors"
+            className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
           >
-            Services
+            <Code className="w-4 h-4" /> Services
           </Link>
           <Link
             to="/builder"
-            className="text-sm font-medium hover:text-primary transition-colors"
+            className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
           >
-            Service Builder
+            <Layers className="w-4 h-4" /> Service Builder
           </Link>
           <Link
             to="/about"
-            className="text-sm font-medium hover:text-primary transition-colors"
+            className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
           >
-            About
+            <Info className="w-4 h-4" /> About
           </Link>
           <Link
             to="/contact"
-            className="text-sm font-medium hover:text-primary transition-colors"
+            className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
           >
-            Contact
+            <Mail className="w-4 h-4" /> Contact
           </Link>
         </nav>
 
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-3">
             <Link to="/login">
-              <Button variant="outline" size="sm" className="mr-2">
-                Login
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <LogIn className="w-4 h-4" /> Login
               </Button>
             </Link>
             <Link to="/builder">
-              <Button size="sm">Get Started</Button>
+              <Button size="sm" className="bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition-all duration-500">
+                Get Started
+              </Button>
             </Link>
           </div>
 
@@ -101,51 +103,53 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 top-[60px] bg-background z-40 md:hidden">
+        <div className="fixed inset-0 top-[60px] bg-background/95 backdrop-blur-lg z-40 md:hidden">
           <div className="flex flex-col p-6 gap-6">
             <Link
               to="/"
-              className="text-lg font-medium hover:text-primary transition-colors"
+              className="flex items-center gap-3 text-lg font-medium hover:text-primary transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Home
+              <Home className="w-5 h-5" /> Home
             </Link>
             <Link
               to="/services"
-              className="text-lg font-medium hover:text-primary transition-colors"
+              className="flex items-center gap-3 text-lg font-medium hover:text-primary transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Services
+              <Code className="w-5 h-5" /> Services
             </Link>
             <Link
               to="/builder"
-              className="text-lg font-medium hover:text-primary transition-colors"
+              className="flex items-center gap-3 text-lg font-medium hover:text-primary transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Service Builder
+              <Layers className="w-5 h-5" /> Service Builder
             </Link>
             <Link
               to="/about"
-              className="text-lg font-medium hover:text-primary transition-colors"
+              className="flex items-center gap-3 text-lg font-medium hover:text-primary transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
-              About
+              <Info className="w-5 h-5" /> About
             </Link>
             <Link
               to="/contact"
-              className="text-lg font-medium hover:text-primary transition-colors"
+              className="flex items-center gap-3 text-lg font-medium hover:text-primary transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Contact
+              <Mail className="w-5 h-5" /> Contact
             </Link>
             <div className="flex flex-col gap-3 mt-4">
-              <Link to="/login">
-                <Button variant="outline" className="w-full">
-                  Login
+              <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+                  <LogIn className="w-4 h-4" /> Login
                 </Button>
               </Link>
-              <Link to="/builder">
-                <Button className="w-full">Get Started</Button>
+              <Link to="/builder" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition-all duration-500">
+                  Get Started
+                </Button>
               </Link>
             </div>
           </div>

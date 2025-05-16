@@ -5,12 +5,14 @@ interface ScrollRevealProps {
   children: React.ReactNode;
   delay?: number; // 1, 2, 3, or 4 for different delays
   className?: string;
+  effect?: "fade-up" | "fade-down" | "fade-left" | "fade-right" | "zoom-in" | "flip-up";
 }
 
 export default function ScrollReveal({ 
   children, 
   delay = 0, 
-  className = ""
+  className = "",
+  effect = "fade-up"
 }: ScrollRevealProps) {
   const elementRef = useRef<HTMLDivElement>(null);
 
@@ -23,7 +25,7 @@ export default function ScrollReveal({
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
     );
 
     const currentElement = elementRef.current;
@@ -38,10 +40,30 @@ export default function ScrollReveal({
     };
   }, []);
 
+  const getEffectClass = () => {
+    switch (effect) {
+      case "fade-up":
+        return "reveal-fade-up";
+      case "fade-down":
+        return "reveal-fade-down";
+      case "fade-left":
+        return "reveal-fade-left";
+      case "fade-right":
+        return "reveal-fade-right";
+      case "zoom-in":
+        return "reveal-zoom-in";
+      case "flip-up":
+        return "reveal-flip-up";
+      default:
+        return "reveal-fade-up";
+    }
+  };
+
   const delayClass = delay > 0 ? `reveal-delay-${delay}` : "";
+  const effectClass = getEffectClass();
 
   return (
-    <div ref={elementRef} className={`reveal ${delayClass} ${className}`}>
+    <div ref={elementRef} className={`reveal ${effectClass} ${delayClass} ${className}`}>
       {children}
     </div>
   );

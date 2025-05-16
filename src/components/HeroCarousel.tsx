@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Carousel, 
   CarouselContent, 
@@ -18,6 +18,7 @@ interface CarouselSlide {
   backgroundImage: string;
   ctaLink: string;
   ctaText: string;
+  overlayEffect?: "circuit" | "grid" | "particles" | "none";
 }
 
 const slides: CarouselSlide[] = [
@@ -27,6 +28,7 @@ const slides: CarouselSlide[] = [
     backgroundImage: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?q=80&w=2070&auto=format&fit=crop",
     ctaLink: "/builder",
     ctaText: "Start Building",
+    overlayEffect: "circuit",
   },
   {
     title: "Cutting-Edge Digital Solutions",
@@ -34,6 +36,7 @@ const slides: CarouselSlide[] = [
     backgroundImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
     ctaLink: "/services",
     ctaText: "Explore Services",
+    overlayEffect: "grid",
   },
   {
     title: "Enterprise-Ready Technology",
@@ -41,10 +44,32 @@ const slides: CarouselSlide[] = [
     backgroundImage: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=2070&auto=format&fit=crop",
     ctaLink: "/builder",
     ctaText: "Get Started",
+    overlayEffect: "particles",
   }
 ];
 
 export default function HeroCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Auto-advance the carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+        setIsAnimating(false);
+      }, 500); // Half the transition time for a smooth effect
+    }, 8000); // Change slide every 8 seconds
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Manually set the current slide index when carousel changes
+  const handleSlideChange = (index: number) => {
+    setCurrentIndex(index);
+  };
+
   return (
     <div className="relative w-full overflow-hidden">
       <Carousel 
@@ -53,6 +78,10 @@ export default function HeroCarousel() {
           align: "center",
         }}
         className="w-full"
+        onSelect={(api) => {
+          const selectedIndex = api.selectedScrollSnap();
+          handleSlideChange(selectedIndex);
+        }}
       >
         <CarouselContent>
           {slides.map((slide, index) => (
@@ -60,32 +89,96 @@ export default function HeroCarousel() {
               <div 
                 className="relative h-[90vh] flex items-center justify-center overflow-hidden"
                 style={{
-                  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.4)), url(${slide.backgroundImage})`,
+                  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)), url(${slide.backgroundImage})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                 }}
               >
+                {/* Futuristic overlay effects */}
+                {slide.overlayEffect === "circuit" && (
+                  <div className="absolute inset-0 z-[1] bg-circuit-pattern opacity-20"></div>
+                )}
+                
+                {slide.overlayEffect === "grid" && (
+                  <div className="absolute inset-0 z-[1]">
+                    <div className="absolute inset-0 grid grid-cols-12 gap-4 opacity-10">
+                      {Array(48).fill(0).map((_, i) => (
+                        <div key={i} className="border border-white/30 backdrop-blur-sm rounded-md h-32"></div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {slide.overlayEffect === "particles" && (
+                  <div className="absolute inset-0 z-[1]">
+                    {Array(30).fill(0).map((_, i) => (
+                      <div 
+                        key={i} 
+                        className="absolute rounded-full bg-white/30 animate-pulse" 
+                        style={{
+                          width: `${Math.random() * 10 + 3}px`,
+                          height: `${Math.random() * 10 + 3}px`,
+                          top: `${Math.random() * 100}%`,
+                          left: `${Math.random() * 100}%`,
+                          animationDuration: `${Math.random() * 5 + 2}s`
+                        }}
+                      ></div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Main content */}
                 <div 
                   className="container mx-auto px-4 relative z-10 text-center"
                   data-aos="fade-up"
-                  data-aos-duration="1200"
-                  data-aos-delay={index * 100}
+                  data-aos-duration="1500"
+                  data-aos-delay={index * 200}
                 >
                   <div className="max-w-4xl mx-auto">
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
+                    <h1 
+                      className="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight"
+                      data-aos="zoom-in" 
+                      data-aos-duration="1000" 
+                      data-aos-delay={(index * 200) + 300}
+                    >
                       {slide.title}
                     </h1>
-                    <p className="text-xl md:text-2xl text-white/90 mb-10 max-w-3xl mx-auto">
+                    <p 
+                      className="text-xl md:text-2xl text-white/90 mb-10 max-w-3xl mx-auto"
+                      data-aos="fade-up" 
+                      data-aos-duration="1000" 
+                      data-aos-delay={(index * 200) + 600}
+                    >
                       {slide.subtitle}
                     </p>
-                    <Link to={slide.ctaLink}>
-                      <Button size="lg" className="text-lg px-8 py-6 transition-all duration-300 bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary">
+                    <Link 
+                      to={slide.ctaLink}
+                      data-aos="fade-up" 
+                      data-aos-duration="1000" 
+                      data-aos-delay={(index * 200) + 900}
+                    >
+                      <Button 
+                        size="lg" 
+                        className="text-lg px-8 py-6 transition-all duration-700 bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
+                      >
                         {slide.ctaText}
-                        <ArrowRight className="ml-2 h-5 w-5" />
+                        <ArrowRight className="ml-2 h-5 w-5 animate-pulse" />
                       </Button>
                     </Link>
+
+                    {/* Futuristic decorative elements */}
+                    <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-3/4">
+                      <div className="h-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-50"></div>
+                      <div className="h-0.5 mt-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-30"></div>
+                    </div>
                   </div>
                 </div>
+
+                {/* Tech circuit decorative corners */}
+                <div className="absolute top-16 left-16 w-40 h-40 border-l-2 border-t-2 border-white/20 rounded-tl-lg"></div>
+                <div className="absolute top-16 right-16 w-40 h-40 border-r-2 border-t-2 border-white/20 rounded-tr-lg"></div>
+                <div className="absolute bottom-16 left-16 w-40 h-40 border-l-2 border-b-2 border-white/20 rounded-bl-lg"></div>
+                <div className="absolute bottom-16 right-16 w-40 h-40 border-r-2 border-b-2 border-white/20 rounded-br-lg"></div>
               </div>
             </CarouselItem>
           ))}
@@ -94,13 +187,18 @@ export default function HeroCarousel() {
           {slides.map((_, index) => (
             <button
               key={index}
-              className="w-3 h-3 rounded-full bg-white/50 transition-all duration-300"
+              className={cn(
+                "w-3 h-3 rounded-full transition-all duration-500",
+                currentIndex === index 
+                  ? "bg-white shadow-lg shadow-white/20 w-8" 
+                  : "bg-white/50 hover:bg-white/70"
+              )}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
-        <CarouselPrevious className="absolute left-4 top-1/2 z-10" />
-        <CarouselNext className="absolute right-4 top-1/2 z-10" />
+        <CarouselPrevious className="absolute left-4 top-1/2 z-10 h-12 w-12 rounded-full bg-background/30 backdrop-blur-sm hover:bg-primary border-none" />
+        <CarouselNext className="absolute right-4 top-1/2 z-10 h-12 w-12 rounded-full bg-background/30 backdrop-blur-sm hover:bg-primary border-none" />
       </Carousel>
     </div>
   );
