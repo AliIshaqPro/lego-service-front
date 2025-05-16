@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Calendar, CheckCircle, Clock, MessageCircle, Settings } from "lucide-react";
+import { Calendar, CheckCircle, Clock, MessageCircle, Settings, PlusCircle } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
