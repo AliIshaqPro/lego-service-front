@@ -7,6 +7,9 @@ interface ScrollRevealProps {
   className?: string;
   effect?: "fade-up" | "fade-down" | "fade-left" | "fade-right" | "zoom-in" | "flip-up";
   duration?: number; // Animation duration in ms
+  threshold?: number; // Intersection threshold (0-1)
+  margin?: string; // Intersection observer margin
+  once?: boolean; // Whether to animate only once
 }
 
 export default function ScrollReveal({ 
@@ -14,7 +17,10 @@ export default function ScrollReveal({
   delay = 0, 
   className = "",
   effect = "fade-up",
-  duration = 800
+  duration = 800,
+  threshold = 0.1,
+  margin = "0px 0px -50px 0px",
+  once = false
 }: ScrollRevealProps) {
   const elementRef = useRef<HTMLDivElement>(null);
 
@@ -24,10 +30,16 @@ export default function ScrollReveal({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("active");
+            if (once) {
+              observer.unobserve(entry.target);
+            }
+          } else if (!once) {
+            // Only remove the class if once is false
+            entry.target.classList.remove("active");
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+      { threshold, rootMargin: margin }
     );
 
     const currentElement = elementRef.current;
@@ -40,7 +52,7 @@ export default function ScrollReveal({
         observer.unobserve(currentElement);
       }
     };
-  }, []);
+  }, [threshold, margin, once]);
 
   const getEffectClass = () => {
     switch (effect) {
@@ -75,6 +87,7 @@ export default function ScrollReveal({
       data-aos={effect.replace("-", ":" )}
       data-aos-delay={delay * 100}
       data-aos-duration={duration}
+      data-aos-once={once}
     >
       {children}
     </div>

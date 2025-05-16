@@ -9,8 +9,10 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useRouter } from "@/lib/use-router";
+import { type CarouselApi } from "embla-carousel-react";
 
 interface CarouselSlide {
   title: string;
@@ -25,7 +27,7 @@ const slides: CarouselSlide[] = [
   {
     title: "Build Your Digital Future",
     subtitle: "Create custom service packages with our dynamic Lego-style builder",
-    backgroundImage: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?q=80&w=2070&auto=format&fit=crop",
+    backgroundImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop",
     ctaLink: "/builder",
     ctaText: "Start Building",
     overlayEffect: "circuit",
@@ -33,7 +35,7 @@ const slides: CarouselSlide[] = [
   {
     title: "Cutting-Edge Digital Solutions",
     subtitle: "From web development to digital marketing - everything in one place",
-    backgroundImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
+    backgroundImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop",
     ctaLink: "/services",
     ctaText: "Explore Services",
     overlayEffect: "grid",
@@ -41,7 +43,7 @@ const slides: CarouselSlide[] = [
   {
     title: "Enterprise-Ready Technology",
     subtitle: "Future-proof your business with our scalable digital platform",
-    backgroundImage: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=2070&auto=format&fit=crop",
+    backgroundImage: "https://images.unsplash.com/photo-1534224039826-c7a0eda0e6b3?q=80&w=2070&auto=format&fit=crop",
     ctaLink: "/builder",
     ctaText: "Get Started",
     overlayEffect: "particles",
@@ -51,24 +53,34 @@ const slides: CarouselSlide[] = [
 export default function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
 
   // Auto-advance the carousel
   useEffect(() => {
     const interval = setInterval(() => {
       setIsAnimating(true);
       setTimeout(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+        api?.scrollNext();
         setIsAnimating(false);
       }, 500); // Half the transition time for a smooth effect
     }, 8000); // Change slide every 8 seconds
     
     return () => clearInterval(interval);
-  }, []);
+  }, [api]);
 
-  // Manually set the current slide index when carousel changes
-  const handleSlideChange = (index: number) => {
-    setCurrentIndex(index);
-  };
+  useEffect(() => {
+    if (!api) return;
+    
+    const onSelect = () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    };
+    
+    api.on("select", onSelect);
+    
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -78,10 +90,7 @@ export default function HeroCarousel() {
           align: "center",
         }}
         className="w-full"
-        onSelect={(api) => {
-          const selectedIndex = api.selectedScrollSnap();
-          handleSlideChange(selectedIndex);
-        }}
+        setApi={setApi}
       >
         <CarouselContent>
           {slides.map((slide, index) => (
@@ -89,21 +98,21 @@ export default function HeroCarousel() {
               <div 
                 className="relative h-[90vh] flex items-center justify-center overflow-hidden"
                 style={{
-                  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)), url(${slide.backgroundImage})`,
+                  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${slide.backgroundImage})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                 }}
               >
                 {/* Futuristic overlay effects */}
                 {slide.overlayEffect === "circuit" && (
-                  <div className="absolute inset-0 z-[1] bg-circuit-pattern opacity-20"></div>
+                  <div className="absolute inset-0 z-[1] bg-circuit-pattern opacity-30"></div>
                 )}
                 
                 {slide.overlayEffect === "grid" && (
                   <div className="absolute inset-0 z-[1]">
-                    <div className="absolute inset-0 grid grid-cols-12 gap-4 opacity-10">
+                    <div className="absolute inset-0 grid grid-cols-12 gap-4 opacity-20">
                       {Array(48).fill(0).map((_, i) => (
-                        <div key={i} className="border border-white/30 backdrop-blur-sm rounded-md h-32"></div>
+                        <div key={i} className="border border-white/40 backdrop-blur-sm rounded-md h-32"></div>
                       ))}
                     </div>
                   </div>
@@ -111,21 +120,39 @@ export default function HeroCarousel() {
                 
                 {slide.overlayEffect === "particles" && (
                   <div className="absolute inset-0 z-[1]">
-                    {Array(30).fill(0).map((_, i) => (
+                    {Array(50).fill(0).map((_, i) => (
                       <div 
                         key={i} 
-                        className="absolute rounded-full bg-white/30 animate-pulse" 
+                        className="absolute rounded-full bg-white/40 animate-pulse" 
                         style={{
-                          width: `${Math.random() * 10 + 3}px`,
-                          height: `${Math.random() * 10 + 3}px`,
+                          width: `${Math.random() * 15 + 3}px`,
+                          height: `${Math.random() * 15 + 3}px`,
                           top: `${Math.random() * 100}%`,
                           left: `${Math.random() * 100}%`,
-                          animationDuration: `${Math.random() * 5 + 2}s`
+                          animationDuration: `${Math.random() * 8 + 2}s`
                         }}
                       ></div>
                     ))}
                   </div>
                 )}
+
+                {/* Digital lines animation */}
+                <div className="absolute inset-0 z-[1]">
+                  {Array(20).fill(0).map((_, i) => (
+                    <div 
+                      key={`line-${i}`} 
+                      className="absolute bg-primary/30 animate-pulse" 
+                      style={{
+                        height: i % 2 === 0 ? '100%' : '1px',
+                        width: i % 2 === 0 ? '1px' : '100%',
+                        top: i % 2 === 0 ? '0' : `${(i * 25) % 100}%`,
+                        left: i % 2 === 0 ? `${(i * 15) % 100}%` : '0',
+                        opacity: 0.5,
+                        animationDuration: `${5 + i}s`
+                      }}
+                    ></div>
+                  ))}
+                </div>
 
                 {/* Main content */}
                 <div 
@@ -159,10 +186,10 @@ export default function HeroCarousel() {
                     >
                       <Button 
                         size="lg" 
-                        className="text-lg px-8 py-6 transition-all duration-700 bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
+                        className="text-lg px-8 py-6 interactive-button transition-all duration-700 bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
                       >
                         {slide.ctaText}
-                        <ArrowRight className="ml-2 h-5 w-5 animate-pulse" />
+                        <ArrowUpRight className="ml-2 h-5 w-5 animate-pulse" />
                       </Button>
                     </Link>
 
@@ -175,10 +202,23 @@ export default function HeroCarousel() {
                 </div>
 
                 {/* Tech circuit decorative corners */}
-                <div className="absolute top-16 left-16 w-40 h-40 border-l-2 border-t-2 border-white/20 rounded-tl-lg"></div>
-                <div className="absolute top-16 right-16 w-40 h-40 border-r-2 border-t-2 border-white/20 rounded-tr-lg"></div>
-                <div className="absolute bottom-16 left-16 w-40 h-40 border-l-2 border-b-2 border-white/20 rounded-bl-lg"></div>
-                <div className="absolute bottom-16 right-16 w-40 h-40 border-r-2 border-b-2 border-white/20 rounded-br-lg"></div>
+                <div className="absolute top-16 left-16 w-40 h-40 border-l-2 border-t-2 border-white/30 rounded-tl-lg animate-pulse" style={{animationDuration: '4s'}}></div>
+                <div className="absolute top-16 right-16 w-40 h-40 border-r-2 border-t-2 border-white/30 rounded-tr-lg animate-pulse" style={{animationDuration: '5s'}}></div>
+                <div className="absolute bottom-16 left-16 w-40 h-40 border-l-2 border-b-2 border-white/30 rounded-bl-lg animate-pulse" style={{animationDuration: '6s'}}></div>
+                <div className="absolute bottom-16 right-16 w-40 h-40 border-r-2 border-b-2 border-white/30 rounded-br-lg animate-pulse" style={{animationDuration: '7s'}}></div>
+                
+                {/* Additional futuristic elements */}
+                <div className="absolute bottom-10 left-10 h-20 w-20 border border-primary/50 rounded-full flex items-center justify-center">
+                  <div className="h-14 w-14 border border-accent/50 rounded-full flex items-center justify-center animate-spin-slow">
+                    <div className="h-8 w-8 bg-primary/20 rounded-full animate-pulse"></div>
+                  </div>
+                </div>
+                
+                <div className="absolute top-10 right-10 h-20 w-20 border border-accent/50 rounded-full flex items-center justify-center">
+                  <div className="h-14 w-14 border border-primary/50 rounded-full flex items-center justify-center animate-spin-slow" style={{animationDirection: 'reverse'}}>
+                    <div className="h-8 w-8 bg-accent/20 rounded-full animate-pulse"></div>
+                  </div>
+                </div>
               </div>
             </CarouselItem>
           ))}
@@ -194,11 +234,12 @@ export default function HeroCarousel() {
                   : "bg-white/50 hover:bg-white/70"
               )}
               aria-label={`Go to slide ${index + 1}`}
+              onClick={() => api?.scrollTo(index)}
             />
           ))}
         </div>
-        <CarouselPrevious className="absolute left-4 top-1/2 z-10 h-12 w-12 rounded-full bg-background/30 backdrop-blur-sm hover:bg-primary border-none" />
-        <CarouselNext className="absolute right-4 top-1/2 z-10 h-12 w-12 rounded-full bg-background/30 backdrop-blur-sm hover:bg-primary border-none" />
+        <CarouselPrevious className="absolute left-8 top-1/2 z-10 h-12 w-12 rounded-full bg-background/30 backdrop-blur-sm hover:bg-primary border-none shadow-lg shadow-black/10" />
+        <CarouselNext className="absolute right-8 top-1/2 z-10 h-12 w-12 rounded-full bg-background/30 backdrop-blur-sm hover:bg-primary border-none shadow-lg shadow-black/10" />
       </Carousel>
     </div>
   );
