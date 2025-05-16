@@ -2,311 +2,207 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import ScrollReveal from "@/components/ScrollReveal";
 import FloatingElement from "@/components/FloatingElement";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, ArrowRight } from "lucide-react";
+import HeroCarousel from "@/components/HeroCarousel";
+import FeatureShowcase from "@/components/FeatureShowcase";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import StatsSection from "@/components/StatsSection";
+import TechStackSection from "@/components/TechStackSection";
+import FaqSection from "@/components/FaqSection";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function HomePage() {
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    // Initialize AOS with slower animations
+    AOS.init({
+      duration: 1200,
+      once: false,
+      mirror: true,
+      easing: 'ease-out-cubic',
+    });
+    
+    return () => {
+      AOS.refresh();
+    };
   }, []);
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 hero-gradient overflow-hidden">
-        <div className="container">
-          <div className="relative z-10 max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight gradient-text leading-tight">
-              Build Your Digital Future With Premium Services
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Create custom digital service packages with our dynamic Lego-style builder. Select the services you need and watch your vision come to life.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/services">
-                <Button size="lg" className="text-base gap-2 shadow-lg">
-                  Explore Services
-                </Button>
-              </Link>
-              <Link to="/builder">
-                <Button size="lg" variant="outline" className="text-base gap-2">
-                  Start Building
-                </Button>
-              </Link>
-            </div>
-
-            {/* Abstract shapes */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] -z-10 opacity-20 animate-spin-slow pointer-events-none">
-              <div className="absolute top-0 left-[20%] w-96 h-96 rounded-full bg-primary/20 blur-3xl"></div>
-              <div className="absolute bottom-0 right-[20%] w-96 h-96 rounded-full bg-accent/20 blur-3xl"></div>
-            </div>
-          </div>
-
-          <div className="mt-16 max-w-5xl mx-auto relative">
-            <FloatingElement className="bg-card rounded-lg p-6 shadow-xl dark:border border-border dark:bg-secondary/30 dark:backdrop-blur-lg">
-              <img 
-                src="https://placehold.co/1200x600/2a2a2a/FFFFFF/webp?text=Builder+Interface" 
-                alt="Service Builder Interface" 
-                className="w-full h-auto rounded"
-              />
-            </FloatingElement>
-            
-            {/* Decorative elements */}
-            <div className="absolute -top-10 -right-10 w-20 h-20 bg-accent/10 rounded-full blur-xl"></div>
-            <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-primary/10 rounded-full blur-xl"></div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Preview Section */}
-      <section className="py-20 bg-background">
-        <div className="container">
+      {/* Hero Carousel Section */}
+      <HeroCarousel />
+      
+      {/* Main Services Section */}
+      <section className="py-24 bg-background relative overflow-hidden">
+        <div className="container mx-auto px-4">
           <ScrollReveal>
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Premium Digital Services</h2>
-              <p className="text-muted-foreground">
-                Mix and match from our comprehensive suite of professional services to create your perfect package
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight gradient-text">
+                Build Your Digital Future With Premium Services
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Create custom digital service packages with our dynamic Lego-style builder. 
+                Select the services you need and watch your vision come to life.
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
             <ScrollReveal delay={1}>
-              <Card className="transition-all hover:shadow-lg hover:-translate-y-1 duration-300 overflow-hidden border-none glass-effect">
-                <div className="h-2 bg-gradient-to-r from-primary to-accent"></div>
-                <CardContent className="pt-6">
-                  <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Web Development</h3>
-                  <p className="text-muted-foreground mb-4">
-                    From simple landing pages to complex web applications
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>Frontend Development</span>
-                    </li>
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>Backend Systems</span>
-                    </li>
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>CMS Integration</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </ScrollReveal>
-
-            <ScrollReveal delay={2}>
-              <Card className="transition-all hover:shadow-lg hover:-translate-y-1 duration-300 overflow-hidden border-none glass-effect">
-                <div className="h-2 bg-gradient-to-r from-primary to-accent"></div>
-                <CardContent className="pt-6">
-                  <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">SEO Optimization</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Improve visibility and drive organic traffic
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>Keyword Research</span>
-                    </li>
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>On-page Optimization</span>
-                    </li>
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>Link Building</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </ScrollReveal>
-
-            <ScrollReveal delay={3}>
-              <Card className="transition-all hover:shadow-lg hover:-translate-y-1 duration-300 overflow-hidden border-none glass-effect">
-                <div className="h-2 bg-gradient-to-r from-primary to-accent"></div>
-                <CardContent className="pt-6">
-                  <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Digital Marketing</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Connect with your audience across channels
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>Social Media Marketing</span>
-                    </li>
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>Email Campaigns</span>
-                    </li>
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>PPC Advertising</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </ScrollReveal>
-
-            <ScrollReveal delay={4}>
-              <Card className="transition-all hover:shadow-lg hover:-translate-y-1 duration-300 overflow-hidden border-none glass-effect">
-                <div className="h-2 bg-gradient-to-r from-primary to-accent"></div>
-                <CardContent className="pt-6">
-                  <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Branding & Design</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Create a distinctive and memorable brand identity
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>Logo Design</span>
-                    </li>
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>Brand Guidelines</span>
-                    </li>
-                    <li className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>UI/UX Design</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </ScrollReveal>
-          </div>
-
-          <div className="mt-12 text-center">
-            <ScrollReveal>
-              <Link to="/services">
-                <Button variant="outline" size="lg" className="gap-2">
-                  View All Services
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                    <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <div className="bg-card rounded-lg p-6 border border-border shadow-lg transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
+                <div className="bg-primary/10 dark:bg-primary/20 p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
+                  <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                   </svg>
-                </Button>
-              </Link>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* Service Builder Preview */}
-      <section className="py-20 bg-muted/50">
-        <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <ScrollReveal>
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  Build Your Custom Service Package
-                </h2>
-                <p className="text-muted-foreground mb-6">
-                  Our interactive service builder lets you select and customize exactly what you need.
-                  Simply add or remove services like building blocks and see your package come together in real-time.
+                </div>
+                <h3 className="text-xl font-bold mb-3">Web Development</h3>
+                <p className="text-muted-foreground mb-6 flex-grow">
+                  Custom websites and web applications designed with cutting-edge technology and user-centered design principles.
                 </p>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-start gap-3">
-                    <div className="shrink-0 bg-primary/10 dark:bg-primary/20 p-1 rounded-full mt-1">
-                      <CheckCircle className="text-primary w-4 h-4" />
-                    </div>
-                    <span>Select only the services you need</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="shrink-0 bg-primary/10 dark:bg-primary/20 p-1 rounded-full mt-1">
-                      <CheckCircle className="text-primary w-4 h-4" />
-                    </div>
-                    <span>See prices and delivery estimates update in real-time</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="shrink-0 bg-primary/10 dark:bg-primary/20 p-1 rounded-full mt-1">
-                      <CheckCircle className="text-primary w-4 h-4" />
-                    </div>
-                    <span>Choose from pre-built service kits or customize your own</span>
-                  </li>
-                </ul>
-                <Link to="/builder">
-                  <Button size="lg">Start Building</Button>
+                <Link to="/services" className="text-primary font-medium flex items-center mt-auto group">
+                  Learn more
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={2}>
-              <FloatingElement className="relative">
-                <div className="relative z-10 bg-card rounded-lg p-6 shadow-xl border border-border dark:bg-secondary/30 dark:backdrop-blur-lg">
-                  <img 
-                    src="https://placehold.co/600x400/2a2a2a/FFFFFF/webp?text=Builder+Demo"
-                    alt="Service Builder Demo" 
-                    className="w-full h-auto rounded"
-                  />
+              <div className="bg-card rounded-lg p-6 border border-border shadow-lg transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
+                <div className="bg-primary/10 dark:bg-primary/20 p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
+                  <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
                 </div>
-                {/* Decorative elements */}
-                <div className="absolute top-5 -right-5 w-full h-full bg-accent/5 rounded-lg -z-10 rotate-3"></div>
-                <div className="absolute top-10 -right-10 w-full h-full bg-primary/5 rounded-lg -z-20 rotate-6"></div>
-              </FloatingElement>
+                <h3 className="text-xl font-bold mb-3">SEO Optimization</h3>
+                <p className="text-muted-foreground mb-6 flex-grow">
+                  Data-driven strategies to improve your search visibility and drive organic traffic to your digital properties.
+                </p>
+                <Link to="/services" className="text-primary font-medium flex items-center mt-auto group">
+                  Learn more
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={3}>
+              <div className="bg-card rounded-lg p-6 border border-border shadow-lg transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
+                <div className="bg-primary/10 dark:bg-primary/20 p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
+                  <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3">Digital Marketing</h3>
+                <p className="text-muted-foreground mb-6 flex-grow">
+                  Strategic campaigns that connect your brand with target audiences across all digital touchpoints.
+                </p>
+                <Link to="/services" className="text-primary font-medium flex items-center mt-auto group">
+                  Learn more
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={4}>
+              <div className="bg-card rounded-lg p-6 border border-border shadow-lg transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
+                <div className="bg-primary/10 dark:bg-primary/20 p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
+                  <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3">Branding & Design</h3>
+                <p className="text-muted-foreground mb-6 flex-grow">
+                  Visual identity systems and brand experiences that create emotional connections with your audience.
+                </p>
+                <Link to="/services" className="text-primary font-medium flex items-center mt-auto group">
+                  Learn more
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
             </ScrollReveal>
           </div>
         </div>
       </section>
 
+      {/* Service Builder Showcase */}
+      <FeatureShowcase
+        title="Build Your Own Digital Solution"
+        description="Our interactive service builder lets you select and combine services like building blocks. Create a completely customized package that meets your exact needs while seeing real-time pricing and delivery estimates."
+        image="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=2070&auto=format&fit=crop"
+      >
+        <ul className="space-y-4 mb-8">
+          <li className="flex items-start gap-3">
+            <div className="shrink-0 bg-primary/10 dark:bg-primary/20 p-1 rounded-full mt-1">
+              <CheckCircle className="text-primary w-4 h-4" />
+            </div>
+            <span>Drag-and-drop interface for intuitive service selection</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <div className="shrink-0 bg-primary/10 dark:bg-primary/20 p-1 rounded-full mt-1">
+              <CheckCircle className="text-primary w-4 h-4" />
+            </div>
+            <span>Real-time pricing updates as you build your package</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <div className="shrink-0 bg-primary/10 dark:bg-primary/20 p-1 rounded-full mt-1">
+              <CheckCircle className="text-primary w-4 h-4" />
+            </div>
+            <span>Transparent timelines and delivery estimates</span>
+          </li>
+        </ul>
+        <Link to="/builder">
+          <Button size="lg" className="gap-2">
+            Try the Builder
+            <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
+        </Link>
+      </FeatureShowcase>
+
+      {/* Stats Section */}
+      <StatsSection />
+
       {/* Pre-built Kits Section */}
-      <section className="py-20 bg-background">
-        <div className="container">
+      <section className="py-24 bg-background">
+        <div className="container mx-auto px-4">
           <ScrollReveal>
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Pre-Built Service Kits</h2>
-              <p className="text-muted-foreground">
-                Ready-to-go service packages designed for specific business needs
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight gradient-text">
+                Pre-Built Service Kits
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Ready-to-go packages designed for specific business needs, with the flexibility to customize further.
               </p>
             </div>
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <ScrollReveal delay={1}>
-              <Card className="transition-all hover:shadow-lg hover:-translate-y-1 duration-300 h-full flex flex-col border-none glass-effect">
+              <div className="bg-card rounded-lg border-none glass-effect overflow-hidden transition-all duration-300 hover:-translate-y-2 shadow-xl h-full flex flex-col">
                 <div className="h-2 bg-gradient-to-r from-primary to-accent"></div>
-                <CardContent className="pt-6 flex-1 flex flex-col">
+                <div className="p-8 flex flex-col h-full">
                   <div className="mb-4">
                     <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">Most Popular</span>
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Startup Launch Kit</h3>
                   <p className="text-muted-foreground mb-6 flex-1">
-                    Everything you need to launch your startup online with a professional presence
+                    Everything you need to launch your startup online with a professional presence.
                   </p>
                   <div className="mb-6">
                     <div className="text-3xl font-bold mb-1">$1,899</div>
                     <div className="text-muted-foreground text-sm">Estimated delivery: 4 weeks</div>
                   </div>
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-3 mb-6">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>5-page Website</span>
+                      <span>5-page Responsive Website</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="text-green-500 w-4 h-4" />
-                      <span>Logo Design</span>
+                      <span>Logo & Brand Identity</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="text-green-500 w-4 h-4" />
@@ -320,26 +216,26 @@ export default function HomePage() {
                   <Link to="/builder" className="mt-auto">
                     <Button className="w-full">Select & Customize</Button>
                   </Link>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </ScrollReveal>
 
             <ScrollReveal delay={2}>
-              <Card className="transition-all hover:shadow-lg hover:-translate-y-1 duration-300 h-full flex flex-col border-none glass-effect">
+              <div className="bg-card rounded-lg border-none glass-effect overflow-hidden transition-all duration-300 hover:-translate-y-2 shadow-xl h-full flex flex-col">
                 <div className="h-2 bg-gradient-to-r from-primary to-accent"></div>
-                <CardContent className="pt-6 flex-1 flex flex-col">
+                <div className="p-8 flex flex-col h-full">
                   <div className="mb-4">
                     <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">Best Value</span>
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Web & SEO Pack</h3>
                   <p className="text-muted-foreground mb-6 flex-1">
-                    Comprehensive web presence with advanced SEO strategies for maximum visibility
+                    Comprehensive web presence with advanced SEO strategies for maximum visibility.
                   </p>
                   <div className="mb-6">
                     <div className="text-3xl font-bold mb-1">$3,499</div>
                     <div className="text-muted-foreground text-sm">Estimated delivery: 6 weeks</div>
                   </div>
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-3 mb-6">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="text-green-500 w-4 h-4" />
                       <span>10-page Custom Website</span>
@@ -360,26 +256,26 @@ export default function HomePage() {
                   <Link to="/builder" className="mt-auto">
                     <Button className="w-full">Select & Customize</Button>
                   </Link>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </ScrollReveal>
 
             <ScrollReveal delay={3}>
-              <Card className="transition-all hover:shadow-lg hover:-translate-y-1 duration-300 h-full flex flex-col border-none glass-effect">
+              <div className="bg-card rounded-lg border-none glass-effect overflow-hidden transition-all duration-300 hover:-translate-y-2 shadow-xl h-full flex flex-col">
                 <div className="h-2 bg-gradient-to-r from-primary to-accent"></div>
-                <CardContent className="pt-6 flex-1 flex flex-col">
+                <div className="p-8 flex flex-col h-full">
                   <div className="mb-4">
                     <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">Advanced</span>
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Lead Generation Funnel</h3>
                   <p className="text-muted-foreground mb-6 flex-1">
-                    Complete funnel setup designed to capture and convert high-quality leads
+                    Complete funnel setup designed to capture and convert high-quality leads.
                   </p>
                   <div className="mb-6">
                     <div className="text-3xl font-bold mb-1">$4,799</div>
                     <div className="text-muted-foreground text-sm">Estimated delivery: 8 weeks</div>
                   </div>
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-3 mb-6">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="text-green-500 w-4 h-4" />
                       <span>Landing Page Development</span>
@@ -400,33 +296,78 @@ export default function HomePage() {
                   <Link to="/builder" className="mt-auto">
                     <Button className="w-full">Select & Customize</Button>
                   </Link>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </ScrollReveal>
           </div>
         </div>
       </section>
 
+      {/* Advanced Platform Feature */}
+      <FeatureShowcase
+        title="Enterprise-Grade Platform"
+        description="Monitor your projects, communicate with your team, and manage your digital services all in one place. Our dashboard provides complete visibility and control over your digital investments."
+        image="https://images.unsplash.com/photo-1560179707-f14e90ef3623?q=80&w=2073&auto=format&fit=crop"
+        reverse={true}
+      >
+        <ul className="space-y-4 mb-8">
+          <li className="flex items-start gap-3">
+            <div className="shrink-0 bg-primary/10 dark:bg-primary/20 p-1 rounded-full mt-1">
+              <CheckCircle className="text-primary w-4 h-4" />
+            </div>
+            <span>Real-time project tracking and milestone updates</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <div className="shrink-0 bg-primary/10 dark:bg-primary/20 p-1 rounded-full mt-1">
+              <CheckCircle className="text-primary w-4 h-4" />
+            </div>
+            <span>Direct communication with your project team</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <div className="shrink-0 bg-primary/10 dark:bg-primary/20 p-1 rounded-full mt-1">
+              <CheckCircle className="text-primary w-4 h-4" />
+            </div>
+            <span>Asset management and collaboration tools</span>
+          </li>
+        </ul>
+        <Link to="/dashboard">
+          <Button size="lg" className="gap-2">
+            Explore Dashboard
+            <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
+        </Link>
+      </FeatureShowcase>
+
+      {/* Testimonials Section */}
+      <TestimonialsSection />
+
+      {/* Technology Stack */}
+      <TechStackSection />
+
+      {/* FAQ Section */}
+      <FaqSection />
+
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary/90 to-accent/90 text-white">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
+      <section className="py-24 bg-gradient-to-br from-primary/90 to-accent/90 text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
             <ScrollReveal>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className="text-3xl md:text-5xl font-bold mb-6">
                 Ready to Build Your Digital Future?
               </h2>
-              <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
+              <p className="text-xl opacity-90 mb-10 max-w-2xl mx-auto">
                 Start building your custom service package today and take the next step in your digital journey.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-wrap gap-4 justify-center">
                 <Link to="/builder">
-                  <Button size="lg" variant="secondary" className="text-primary text-base gap-2">
+                  <Button size="lg" variant="secondary" className="text-primary font-medium text-lg px-8 py-6">
                     Start Building Now
+                    <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Link to="/contact">
-                  <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 text-base gap-2">
-                    Contact Our Team
+                <Link to="/services">
+                  <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 font-medium text-lg px-8 py-6">
+                    Browse All Services
                   </Button>
                 </Link>
               </div>
